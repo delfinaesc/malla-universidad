@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Interactiva</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; text-align: center; }
+    .materia {
+      display: inline-block;
+      background: white;
+      border: 2px solid #ccc;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .materia.tachada {
+      background: #d1ffd1;
+      text-decoration: line-through;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Interactiva</h1>
+  <div id="malla">
+    <div class="materia" onclick="toggle(this)">Anatomía</div>
+    <div class="materia" onclick="toggle(this)">Histología</div>
+    <div class="materia" onclick="toggle(this)">Bioquímica</div>
+    <!-- Agregá más materias acá -->
+  </div>
+
+  <script>
+    function toggle(el) {
+      el.classList.toggle("tachada");
+      guardarEstado();
+    }
+
+    function guardarEstado() {
+      const materias = document.querySelectorAll(".materia");
+      const estado = Array.from(materias).map(m => m.classList.contains("tachada"));
+      localStorage.setItem("estadoMaterias", JSON.stringify(estado));
+    }
+
+    function cargarEstado() {
+      const materias = document.querySelectorAll(".materia");
+      const estado = JSON.parse(localStorage.getItem("estadoMaterias") || "[]");
+      estado.forEach((e, i) => {
+        if (e) materias[i].classList.add("tachada");
+      });
+    }
+
+    window.onload = cargarEstado;
+  </script>
+</body>
+</html>
